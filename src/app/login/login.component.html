@@ -1,0 +1,60 @@
+<div class="login-container">
+  <div class="glass-panel">
+    <div *ngIf="!loginSuccess" class="form-wrapper">
+      <div class="header">
+        <h2>Bienvenido</h2>
+        <p>Inicia sesión en tu cuenta</p>
+      </div>
+      
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <label for="usurio">Usuario</label>
+          <input 
+            type="text" 
+            id="usurio" 
+            formControlName="usurio"
+            placeholder="Ingrese su usuario (ej: agiraldo)"
+            [class.invalid]="loginForm.get('usurio')?.invalid && loginForm.get('usurio')?.touched"
+          >
+          <span class="error-text" *ngIf="loginForm.get('usurio')?.invalid && loginForm.get('usurio')?.touched">
+            El usuario es requerido.
+          </span>
+        </div>
+
+        <div class="input-group">
+          <label for="clave">Contraseña</label>
+          <input 
+            type="password" 
+            id="clave" 
+            formControlName="clave"
+            placeholder="Ingrese su contraseña"
+            [class.invalid]="loginForm.get('clave')?.invalid && loginForm.get('clave')?.touched"
+          >
+          <span class="error-text" *ngIf="loginForm.get('clave')?.invalid && loginForm.get('clave')?.touched">
+            La contraseña es requerida.
+          </span>
+        </div>
+
+        <div class="error-message" *ngIf="loginError">
+          {{ loginError }}
+        </div>
+
+        <button type="submit" [disabled]="isLoading" class="login-btn">
+          <span *ngIf="!isLoading">Ingresar</span>
+          <span *ngIf="isLoading" class="loader"></span>
+        </button>
+      </form>
+    </div>
+
+    <div *ngIf="loginSuccess" class="success-wrapper">
+      <div class="success-icon">✓</div>
+      <h2>¡Inicio de Sesión Exitoso!</h2>
+      <p>Bienvenido de nuevo, <strong>{{ userName }}</strong>.</p>
+      
+      <div class="action-buttons">
+        <button class="login-btn continue-btn" (click)="continueToApp()">Continuar al Sistema</button>
+        <button class="logout-btn" (click)="loginSuccess = false; loginForm.reset()">Cerrar sesión</button>
+      </div>
+    </div>
+  </div>
+</div>
